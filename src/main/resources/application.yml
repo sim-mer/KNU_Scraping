@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: KNU_Scraping
+
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+
+
