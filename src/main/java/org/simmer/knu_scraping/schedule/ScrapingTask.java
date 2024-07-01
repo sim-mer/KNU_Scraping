@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.simmer.knu_scraping.config.MajorEnum;
 import org.simmer.knu_scraping.dto.HtmlDocument;
 import org.simmer.knu_scraping.dto.Notice;
-import org.simmer.knu_scraping.redis.RecentNotice;
-import org.simmer.knu_scraping.redis.RedisCRUDRepository;
 import org.simmer.knu_scraping.util.DiscordClient;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +15,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ScrapingTask {
-    private final RedisCRUDRepository redisCRUDRepository;
     private final DiscordClient discordClient;
+    private final RedisTemplate<String, String> redisTemplate;
 
 
     @Scheduled(cron = "0 0/5 7-19 * * MON-FRI")
@@ -36,14 +36,15 @@ public class ScrapingTask {
     }
 
     private int getRecentNum(int currentNoticeNum, int major) {
-        RecentNotice recentNotice = redisCRUDRepository.findById(major)
-                .orElse(new RecentNotice(major, currentNoticeNum));
+        ValueOperations<String, String> values = redisTemplate.opsForValue();
+        String recent = values.get(String.valueOf(major));
 
-        int recentNum = recentNotice.getRecentNoticeNum();
+        values.set(String.valueOf(major), String.valueOf(currentNoticeNum));
 
-        recentNotice.setRecentNoticeNum(currentNoticeNum);
-        redisCRUDRepository.save(recentNotice);
+        if(recent == null) {
+            return currentNoticeNum - 1;
+        }
 
-        return recentNum;
+        return Integer.parseInt(recent);
     }
 }
