@@ -42,7 +42,7 @@ public class ScrapingTask {
         values.set(String.valueOf(major), String.valueOf(currentNoticeNum));
 
         if(recent == null) {
-            return currentNoticeNum - 1;
+            return currentNoticeNum;
         }
 
         return Integer.parseInt(recent);
