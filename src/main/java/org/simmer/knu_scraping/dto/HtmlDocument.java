@@ -3,8 +3,9 @@ package org.simmer.knu_scraping.dto;
 import lombok.Getter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.simmer.knu_scraping.config.MajorEnum;
+import org.simmer.knu_scraping.domain.MajorEnum;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class HtmlDocument {
     private final MajorEnum major;
     private final Document document;
     private final int currentNoticeNum;
+    private int startNoticeIndex = 0;
 
     public HtmlDocument(MajorEnum major) {
         this.major = major;
@@ -26,13 +28,8 @@ public class HtmlDocument {
         List<Notice> newNotices = new ArrayList<>();
         Elements contents = document.select(major.noticeList);
 
-        for (int i = newNoticeCount - 1; i >= 0 ; i--) {
-            newNotices.add(new Notice(
-                    contents.get(i).select(major.tag).text(),
-                    contents.get(i).select(major.title).text(),
-                    contents.get(i).select(major.date).text(),
-                    contents.get(i).select(major.link).attr("href")
-            ));
+        for (int i = newNoticeCount - 1 + startNoticeIndex; i >= startNoticeIndex ; i--) {
+            newNotices.add(Notice.of(contents.get(i), major));
         }
 
         return newNotices;
@@ -47,11 +44,20 @@ public class HtmlDocument {
     }
 
     private int currentNoticeNum() {
-        return Integer.parseInt(
-                document
-                        .select(major.currentNoticeNum)
-                        .first()
-                        .text()
-        );
+        Elements rows = document.select(major.noticeList);
+
+        for (Element row : rows) {
+            Element tdNum = row.selectFirst(major.currentNoticeNum);
+            startNoticeIndex++;
+
+            String text = tdNum.text();
+
+            if(text.matches("\\d+")) {
+                startNoticeIndex--;
+                return Integer.parseInt(text);
+            }
+        }
+
+        throw new RuntimeException("공지사항 번호를 가져오는데 실패했습니다.");
     }
 }
