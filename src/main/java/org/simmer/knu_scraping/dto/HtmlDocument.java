@@ -47,7 +47,7 @@ public class HtmlDocument {
         Elements rows = document.select(major.noticeList);
 
         for (Element row : rows) {
-            Element tdNum = row.selectFirst(major.currentNoticeNum);
+            Element tdNum = row.selectFirst(major.noticeNum);
             startNoticeIndex++;
 
             String text = tdNum.text();
