@@ -1,6 +1,6 @@
 package org.simmer.knu_scraping.util;
 
-import org.simmer.knu_scraping.config.MajorEnum;
+import org.simmer.knu_scraping.domain.MajorEnum;
 import org.simmer.knu_scraping.dto.Notice;
 import org.simmer.knu_scraping.dto.DiscordMessage;
 import org.springframework.http.HttpHeaders;

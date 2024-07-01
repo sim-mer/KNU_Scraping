@@ -1,7 +1,7 @@
 package org.simmer.knu_scraping.schedule;
 
 import lombok.RequiredArgsConstructor;
-import org.simmer.knu_scraping.config.MajorEnum;
+import org.simmer.knu_scraping.domain.MajorEnum;
 import org.simmer.knu_scraping.dto.HtmlDocument;
 import org.simmer.knu_scraping.dto.Notice;
 import org.simmer.knu_scraping.util.DiscordClient;
