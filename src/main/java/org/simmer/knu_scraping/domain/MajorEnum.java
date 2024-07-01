@@ -32,9 +32,9 @@ public enum MajorEnum {
     public final String title;
     public final String date;
     public final String link;
-    public final SiteFactory siteFactory;
+    public final LinkFactory linkFactory;
 
-    MajorEnum(String url, String webhookUrl, String currentNoticeNum, String noticeList, String tag, String title, String date, String link, SiteFactory siteFactory) {
+    MajorEnum(String url, String webhookUrl, String currentNoticeNum, String noticeList, String tag, String title, String date, String link, LinkFactory linkFactory) {
         this.url = url;
         this.webhookUrl = webhookUrl;
         this.currentNoticeNum = currentNoticeNum;
@@ -43,6 +43,6 @@ public enum MajorEnum {
         this.title = title;
         this.date = date;
         this.link = link;
-        this.siteFactory = siteFactory;
+        this.linkFactory = linkFactory;
     }
 }

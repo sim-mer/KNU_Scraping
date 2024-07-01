@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class KnuAcademic implements SiteFactory{
+public class KnuAcademic implements LinkFactory {
     private final String baseUrl = "https://www.knu.ac.kr/wbbs/wbbs/bbs/btin/stdViewBtin.action?&note_div=row&menu_idx=42";
     private final List<String> paramNames = List.of("&bbs_cde=", "&bltn_no=");
 

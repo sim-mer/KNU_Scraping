@@ -12,8 +12,8 @@ public record Notice (String tag, String title, String date, String link) {
             tag = e.select(major.tag).text();
         }
 
-        if(major.siteFactory != null) {
-            url = major.siteFactory.createLink(url);
+        if(major.linkFactory != null) {
+            url = major.linkFactory.createLink(url);
         }
 
         return new Notice(
