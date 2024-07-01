@@ -8,7 +8,7 @@ spring:
       port: 6379
 
   webhook:
-    computer_science_and_engineering: ${webhook.computer_science_and_engineering}
-    knu_academic: ${webhook.knu_academic}
+    computer_science_and_engineering: ${computer_science_and_engineering}
+    knu_academic: ${knu_academic}
 
 
