@@ -3,7 +3,7 @@ package org.simmer.knu_scraping.domain;
 public enum MajorEnum {
     COMPUTER_SCIENCE_AND_ENGINEERING(
             "https://cse.knu.ac.kr/bbs/board.php?bo_table=sub5_1",
-            "",
+            Webhook.computerScienceAndEngineering,
             "td.td_num2",
             "#fboardlist > div > table > tbody > tr",
             "td.td_subject > a",
@@ -14,7 +14,7 @@ public enum MajorEnum {
     ),
     KNU_ACADEMIC(
             "https://www.knu.ac.kr/wbbs//wbbs/bbs/btin/stdList.action?btin.page=57&menu_idx=42",
-            "https://discord.com/api/webhooks/1255930388241448990/8ylzq2hw6ARc97OzTVafjzrTWozeax4qby_tZpICpkbQdaPnYzNBCsxKJ_f0MVRJMUgg",
+            Webhook.knuAcademic,
             "td.num",
             "#btinForm > div > table > tbody > tr",
             null,
