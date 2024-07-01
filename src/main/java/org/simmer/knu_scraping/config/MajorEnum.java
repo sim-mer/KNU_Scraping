@@ -6,7 +6,7 @@ public enum MajorEnum {
             "",
             "#fboardlist > div > table > tbody > tr:nth-child(1) > td.td_num2",
             "#fboardlist > div > table > tbody > tr",
-            "td.td_num2",
+            "td.td_subject > a",
             "td.td_subject > div > a",
             "td.td_datetime.hidden-xs",
             "td.td_subject > div > a"
