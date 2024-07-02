@@ -2,7 +2,7 @@ package org.simmer.knu_scraping;
 
 import org.junit.jupiter.api.Test;
 import org.simmer.knu_scraping.domain.MajorEnum;
-import org.simmer.knu_scraping.dto.HtmlDocument;
+import org.simmer.knu_scraping.domain.HtmlDocument;
 import org.simmer.knu_scraping.dto.Notice;
 import org.simmer.knu_scraping.util.DiscordClient;
 import org.springframework.beans.factory.annotation.Autowired;

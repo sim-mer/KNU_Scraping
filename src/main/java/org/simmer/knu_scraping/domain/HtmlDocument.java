@@ -1,11 +1,11 @@
-package org.simmer.knu_scraping.dto;
+package org.simmer.knu_scraping.domain;
 
 import lombok.Getter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.simmer.knu_scraping.domain.MajorEnum;
+import org.simmer.knu_scraping.dto.Notice;
 
 import java.io.IOException;
 import java.util.ArrayList;
