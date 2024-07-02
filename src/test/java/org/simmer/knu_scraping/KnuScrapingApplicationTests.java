@@ -17,27 +17,18 @@ class KnuScrapingApplicationTests {
     private DiscordClient discordClient;
 
     @Test
-    public void test() throws IOException {
-        HtmlDocument htmlDocument = new HtmlDocument(MajorEnum.KNU_ACADEMIC);
-        System.out.println(htmlDocument.getCurrentNoticeNum());
+    public void test() {
+        for(MajorEnum major : MajorEnum.values()) {
+            HtmlDocument htmlDocument = new HtmlDocument(major);
+            System.out.println(major + " 최신 게시글 번호 : " + htmlDocument.getCurrentNoticeNum());
 
-        List<Notice> notices = htmlDocument.getNotices(5);
+            List<Notice> notices = htmlDocument.getNotices(1);
 
-        for(Notice notice : notices) {
-            System.out.println(notice.toString());
+            for(Notice notice : notices) {
+                System.out.println(notice.toString());
+            }
+
+            discordClient.sendDiscordMessage(notices, major);
         }
-
-        discordClient.sendDiscordMessage(notices, MajorEnum.KNU_ACADEMIC);
-
-        htmlDocument = new HtmlDocument(MajorEnum.COMPUTER_SCIENCE_AND_ENGINEERING);
-        System.out.println(htmlDocument.getCurrentNoticeNum());
-
-        notices = htmlDocument.getNotices(5);
-
-        for(Notice notice : notices) {
-            System.out.println(notice.toString());
-        }
-
-        discordClient.sendDiscordMessage(notices, MajorEnum.COMPUTER_SCIENCE_AND_ENGINEERING);
     }
 }
