@@ -16,9 +16,11 @@ public record Notice (String tag, String title, String date, String link) {
             url = major.linkFactory.createLink(url);
         }
 
+        String title = e.select(major.title).first().ownText();
+
         return new Notice(
                 tag,
-                e.select(major.title).text(),
+                title,
                 e.select(major.date).text(),
                 url
         );
