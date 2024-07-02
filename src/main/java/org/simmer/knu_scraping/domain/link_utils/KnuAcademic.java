@@ -1,4 +1,4 @@
-package org.simmer.knu_scraping.domain;
+package org.simmer.knu_scraping.domain.link_utils;
 
 import java.util.ArrayList;
 import java.util.List;
