@@ -10,3 +10,4 @@ spring:
   webhook:
     computer_science_and_engineering: https://discord.com/api/webhooks/1257299895916822650/ajcXtDHg_OBUNI938x-wNoKk-DKQKfXyhFJuYRMLAjk1bqJX174sRBOTgx6N2BHRvVZW
     knu_academic: https://discord.com/api/webhooks/1257299895916822650/ajcXtDHg_OBUNI938x-wNoKk-DKQKfXyhFJuYRMLAjk1bqJX174sRBOTgx6N2BHRvVZW
+    electronics_engineering: https://discord.com/api/webhooks/1257299895916822650/ajcXtDHg_OBUNI938x-wNoKk-DKQKfXyhFJuYRMLAjk1bqJX174sRBOTgx6N2BHRvVZW

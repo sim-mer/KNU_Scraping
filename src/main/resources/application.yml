@@ -10,5 +10,6 @@ spring:
   webhook:
     computer_science_and_engineering: ${computer_science_and_engineering}
     knu_academic: ${knu_academic}
+    electronics_engineering: ${electronics_engineering}
 
 

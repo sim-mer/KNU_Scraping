@@ -1,5 +1,9 @@
 package org.simmer.knu_scraping.domain;
 
+import org.simmer.knu_scraping.domain.link_utils.ElectronicsEngineering;
+import org.simmer.knu_scraping.domain.link_utils.KnuAcademic;
+import org.simmer.knu_scraping.domain.link_utils.LinkFactory;
+
 public enum MajorEnum {
     COMPUTER_SCIENCE_AND_ENGINEERING(
             "https://cse.knu.ac.kr/bbs/board.php?bo_table=sub5_1",
@@ -22,6 +26,17 @@ public enum MajorEnum {
             "td.date",
             "td.subject > a",
             new KnuAcademic()
+    ),
+    ELECTRONICS_ENGINEERING(
+            "https://see.knu.ac.kr/content/board/notice.html",
+            Webhook.electronicsEngineering,
+            "td:nth-child(1)",
+            "#content > div > div > div.board_list > div.board_body > table > tbody > tr",
+            "td.left > a > span:nth-child(1)",
+            "td.left > a",
+            "td:nth-child(4)",
+            "td.left > a",
+            new ElectronicsEngineering()
     );
 
     public final String url;
