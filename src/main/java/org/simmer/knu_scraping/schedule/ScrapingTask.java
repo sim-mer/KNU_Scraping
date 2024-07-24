@@ -1,8 +1,6 @@
 package org.simmer.knu_scraping.schedule;
 
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.simmer.knu_scraping.schedule.dto.HtmlDocument;
 import org.simmer.knu_scraping.schedule.dto.Notice;
 import org.simmer.knu_scraping.client.DiscordClient;
@@ -15,19 +13,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class ScrapingTask {
 
     private final DiscordClient discordClient;
-    private final Map<Major, WebhookGenerator> webhookGenerators;
+    private final List<WebhookGenerator> webhookGenerators;
     private final RedisTemplate<String, String> redisTemplate;
-
-    public ScrapingTask(DiscordClient discordClient, List<WebhookGenerator> webhookGenerators,
-        RedisTemplate<String, String> redisTemplate) {
-        this.discordClient = discordClient;
-        this.webhookGenerators = webhookGenerators.stream()
-            .collect(Collectors.toUnmodifiableMap(WebhookGenerator::major, Function.identity()));
-        this.redisTemplate = redisTemplate;
-    }
 
 
     @Scheduled(cron = "0 0/5 7-19 * * MON-FRI")
@@ -41,8 +32,18 @@ public class ScrapingTask {
 
             if (currentNoticeNum > recentNum) {
                 List<Notice> notices = htmlDocument.getNotices(currentNoticeNum - recentNum);
-                discordClient.sendDiscordMessage(notices, webhookGenerators.get(major));
+                sendDiscordMessage(notices, major);
             }
+        }
+    }
+
+    private void sendDiscordMessage(List<Notice> notices, Major major) {
+        var webhookGeneratorList = webhookGenerators.stream()
+            .filter(webhookGenerator -> webhookGenerator.major().contains(major))
+            .toList();
+
+        for (WebhookGenerator webhookGenerator : webhookGeneratorList) {
+            discordClient.sendDiscordMessage(notices, webhookGenerator);
         }
     }
 

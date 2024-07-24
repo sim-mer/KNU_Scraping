@@ -1,5 +1,6 @@
 package org.simmer.knu_scraping.util.webhook;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.simmer.knu_scraping.schedule.Major;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,8 +21,8 @@ public class CSEWebhook implements WebhookGenerator {
 
 
     @Override
-    public Major major() {
-        return Major.COMPUTER_SCIENCE_AND_ENGINEERING;
+    public List<Major> major() {
+        return List.of(Major.COMPUTER_SCIENCE_AND_ENGINEERING, Major.KNU_ACADEMIC);
     }
 
     @Override
@@ -35,7 +36,8 @@ public class CSEWebhook implements WebhookGenerator {
             case "인컴" -> ai;
             case "대학원" -> graduate;
             case "대학원 계약학과" -> graduateContract;
-            default -> knuAcademic;
+            case "통합" -> knuAcademic;
+            default -> null;
         };
     }
 }
