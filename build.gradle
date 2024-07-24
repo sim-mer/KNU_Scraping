@@ -26,6 +26,9 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
 
+    // Web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -36,9 +39,6 @@ dependencies {
 
     // Jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.17.2'
-
-    // WebClient
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
