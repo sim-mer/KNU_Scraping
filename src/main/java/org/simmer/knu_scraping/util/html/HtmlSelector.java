@@ -1,6 +1,7 @@
 package org.simmer.knu_scraping.util.html;
 
 import org.simmer.knu_scraping.util.html.link.ElectronicsEngineeringLink;
+import org.simmer.knu_scraping.util.html.link.InternationalLink;
 import org.simmer.knu_scraping.util.html.link.KnuAcademicLink;
 import org.simmer.knu_scraping.util.html.link.LinkGenerator;
 
@@ -34,6 +35,16 @@ public enum HtmlSelector {
         "td:nth-child(4)",
         "td.left > a",
         new ElectronicsEngineeringLink()
+    ),
+    INTERNATIONAL(
+        "https://home.knu.ac.kr/HOME/global/sub.htm?nav_code=glo1549935200",
+        "td.fst",
+        "#body_content > div.board_list > table > tbody > tr",
+        "td:nth-child(4)",
+        "td.subject > a",
+        "td:nth-child(5)",
+        "td.subject > a",
+        new InternationalLink()
     );
 
     public final String url;

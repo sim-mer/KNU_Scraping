@@ -20,6 +20,9 @@ public class DiscordClient {
         for(Notice notice : notices) {
             DiscordMessage discordMessage = new DiscordMessage(notice);
             var url = webhookGenerator.generate(notice.tag());
+            if (url == null) {
+                continue;
+            }
 
             restClient.post()
                     .uri(url)

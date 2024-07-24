@@ -11,6 +11,9 @@ public enum Major {
     ),
     ELECTRONICS_ENGINEERING(
         HtmlSelector.ELECTRONICS_ENGINEERING
+    ),
+    INTERNATIONAL(
+        HtmlSelector.INTERNATIONAL
     );
 
     public final HtmlSelector htmlSelector;
