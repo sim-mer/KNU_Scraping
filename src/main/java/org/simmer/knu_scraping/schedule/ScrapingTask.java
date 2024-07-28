@@ -23,23 +23,33 @@ public class ScrapingTask {
 
     @Scheduled(cron = "0 0/5 7-19 * * MON-FRI")
     public void scraping() {
-        for (Major major : Major.values()) {
-            HtmlDocument htmlDocument = new HtmlDocument(major.htmlSelector);
+        for (Site site : Site.values()) {
+            HtmlDocument htmlDocument = new HtmlDocument(site.htmlSelector);
+
+            if(site == Site.INTERNATIONAL) {
+                String currentTitle = htmlDocument.getCurrentTitle();
+                String recentTitle = getRecentTitle(currentTitle, site.name());
+                if(!currentTitle.equals(recentTitle)) {
+                    List<Notice> notices = htmlDocument.getNoticesByTitle(recentTitle);
+                    sendDiscordMessage(notices, site);
+                }
+                continue;
+            }
 
             int currentNoticeNum = htmlDocument.getCurrentNoticeNum();
 
-            int recentNum = getRecentNum(currentNoticeNum, major.ordinal());
+            int recentNum = getRecentNum(currentNoticeNum, site.ordinal());
 
             if (currentNoticeNum > recentNum) {
                 List<Notice> notices = htmlDocument.getNotices(currentNoticeNum - recentNum);
-                sendDiscordMessage(notices, major);
+                sendDiscordMessage(notices, site);
             }
         }
     }
 
-    private void sendDiscordMessage(List<Notice> notices, Major major) {
+    private void sendDiscordMessage(List<Notice> notices, Site site) {
         var webhookGeneratorList = webhookGenerators.stream()
-            .filter(webhookGenerator -> webhookGenerator.major().contains(major))
+            .filter(webhookGenerator -> webhookGenerator.major().contains(site))
             .toList();
 
         for (WebhookGenerator webhookGenerator : webhookGeneratorList) {
@@ -47,16 +57,29 @@ public class ScrapingTask {
         }
     }
 
-    private int getRecentNum(int currentNoticeNum, int major) {
+    private int getRecentNum(int currentNoticeNum, int site) {
         ValueOperations<String, String> values = redisTemplate.opsForValue();
-        String recent = values.get(String.valueOf(major));
+        String recent = values.get(String.valueOf(site));
 
-        values.set(String.valueOf(major), String.valueOf(currentNoticeNum));
+        values.set(String.valueOf(site), String.valueOf(currentNoticeNum));
 
         if (recent == null) {
             return currentNoticeNum;
         }
 
         return Integer.parseInt(recent);
+    }
+
+    private String getRecentTitle(String currentTitle, String site) {
+        ValueOperations<String, String> values = redisTemplate.opsForValue();
+        String recent = values.get(site);
+
+        values.set(site, currentTitle);
+
+        if (recent == null) {
+            return currentTitle;
+        }
+
+        return recent;
     }
 }

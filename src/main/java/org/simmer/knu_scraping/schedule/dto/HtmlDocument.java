@@ -1,5 +1,6 @@
 package org.simmer.knu_scraping.schedule.dto;
 
+import java.util.Collections;
 import lombok.Getter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,6 +44,23 @@ public class HtmlDocument {
         return newNotices;
     }
 
+    public List<Notice> getNoticesByTitle(String title) {
+        List<Notice> newNotices = new ArrayList<>();
+        Elements contents = document.select(selector.noticeList);
+
+        for (int i = startNoticeIndex; i < contents.size(); i++) {
+            Element e = contents.get(i);
+            if(e.select(selector.title).first().ownText().contains(title)){
+                break;
+            }
+            newNotices.add(Notice.of(e, selector));
+        }
+
+        Collections.reverse(newNotices);
+
+        return newNotices;
+    }
+
     private int currentNoticeNum() {
         Elements rows = document.select(selector.noticeList);
 
@@ -59,5 +77,11 @@ public class HtmlDocument {
         }
 
         throw new RuntimeException("공지사항 번호를 가져오는데 실패했습니다.");
+    }
+
+    public String getCurrentTitle() {
+        Elements rows = document.select(selector.noticeList);
+        Element first = rows.get(startNoticeIndex);
+        return first.select(selector.title).first().ownText();
     }
 }
