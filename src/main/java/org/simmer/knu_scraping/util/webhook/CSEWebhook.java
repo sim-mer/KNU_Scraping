@@ -2,7 +2,7 @@ package org.simmer.knu_scraping.util.webhook;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.simmer.knu_scraping.schedule.Major;
+import org.simmer.knu_scraping.schedule.Site;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("spring.webhook.computer-science-and-engineering")
@@ -21,8 +21,8 @@ public class CSEWebhook implements WebhookGenerator {
 
 
     @Override
-    public List<Major> major() {
-        return List.of(Major.COMPUTER_SCIENCE_AND_ENGINEERING, Major.KNU_ACADEMIC);
+    public List<Site> major() {
+        return List.of(Site.COMPUTER_SCIENCE_AND_ENGINEERING, Site.KNU_ACADEMIC);
     }
 
     @Override

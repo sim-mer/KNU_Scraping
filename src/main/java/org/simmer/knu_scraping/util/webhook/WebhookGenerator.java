@@ -1,10 +1,10 @@
 package org.simmer.knu_scraping.util.webhook;
 
 import java.util.List;
-import org.simmer.knu_scraping.schedule.Major;
+import org.simmer.knu_scraping.schedule.Site;
 
 public interface WebhookGenerator {
 
-    List<Major> major();
+    List<Site> major();
     String generate(String tag);
 }

@@ -4,24 +4,24 @@ import org.jsoup.nodes.Element;
 import org.simmer.knu_scraping.util.html.HtmlSelector;
 
 public record Notice (String tag, String title, String date, String link) {
-    public static Notice of(Element e, HtmlSelector major) {
+    public static Notice of(Element e, HtmlSelector selector) {
         String tag = "통합";
-        String url = e.select(major.link).attr("href");
+        String url = e.select(selector.link).attr("href");
 
-        if(major.tag != null) {
-            tag = e.select(major.tag).text();
+        if(selector.tag != null) {
+            tag = e.select(selector.tag).text();
         }
 
-        if(major.linkGenerator != null) {
-            url = major.linkGenerator.createLink(url);
+        if(selector.linkGenerator != null) {
+            url = selector.linkGenerator.createLink(url);
         }
 
-        String title = e.select(major.title).first().ownText();
+        String title = e.select(selector.title).first().ownText();
 
         return new Notice(
                 tag,
                 title,
-                e.select(major.date).text(),
+                e.select(selector.date).text(),
                 url
         );
     }

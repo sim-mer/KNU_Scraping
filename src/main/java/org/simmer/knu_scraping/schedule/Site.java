@@ -2,7 +2,7 @@ package org.simmer.knu_scraping.schedule;
 
 import org.simmer.knu_scraping.util.html.HtmlSelector;
 
-public enum Major {
+public enum Site {
     COMPUTER_SCIENCE_AND_ENGINEERING(
         HtmlSelector.COMPUTER_SCIENCE_AND_ENGINEERING
     ),
@@ -18,7 +18,7 @@ public enum Major {
 
     public final HtmlSelector htmlSelector;
 
-    Major(HtmlSelector htmlSelector) {
+    Site(HtmlSelector htmlSelector) {
         this.htmlSelector = htmlSelector;
     }
 }
