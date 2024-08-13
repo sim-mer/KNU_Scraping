@@ -1,6 +1,10 @@
 package org.simmer.knu_scraping.schedule;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
+import org.simmer.knu_scraping.persistence.entity.TodayInternational;
+import org.simmer.knu_scraping.persistence.repository.TodayInternationalJpaRepo;
 import org.simmer.knu_scraping.schedule.dto.HtmlDocument;
 import org.simmer.knu_scraping.schedule.dto.Notice;
 import org.simmer.knu_scraping.client.DiscordClient;
@@ -19,6 +23,7 @@ public class ScrapingTask {
     private final DiscordClient discordClient;
     private final List<WebhookGenerator> webhookGenerators;
     private final RedisTemplate<String, String> redisTemplate;
+    private final TodayInternationalJpaRepo todayInternationalJpaRepo;
 
 
     @Scheduled(cron = "0 0/5 7-19 * * MON-FRI")
@@ -27,12 +32,29 @@ public class ScrapingTask {
             HtmlDocument htmlDocument = new HtmlDocument(site.htmlSelector);
 
             if(site == Site.INTERNATIONAL) {
-                String currentTitle = htmlDocument.getCurrentTitle();
-                String recentTitle = getRecentTitle(currentTitle, site.name());
-                if(!currentTitle.equals(recentTitle)) {
-                    List<Notice> notices = htmlDocument.getNoticesByTitle(recentTitle);
-                    sendDiscordMessage(notices, site);
-                }
+
+                LocalDate currentDate = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                String formattedDate = currentDate.format(formatter);
+
+                List<Notice> todayNotices = htmlDocument.getTodayNotices(formattedDate);
+
+                if(todayNotices.isEmpty()) continue;
+
+                var todayList = todayInternationalJpaRepo.findAll();
+
+                var newNotices = todayNotices.stream()
+                    .filter(notice -> todayList.stream()
+                        .noneMatch(today -> today.getTitle().equals(notice.title())))
+                    .toList();
+
+                var newTodayList = newNotices.stream()
+                    .map(notice -> new TodayInternational(notice.title()))
+                    .toList();
+                todayInternationalJpaRepo.saveAll(newTodayList);
+
+                sendDiscordMessage(newNotices, site);
+
                 continue;
             }
 
@@ -45,6 +67,11 @@ public class ScrapingTask {
                 sendDiscordMessage(notices, site);
             }
         }
+    }
+
+    @Scheduled(cron = "0 0 20 * * MON-FRI")
+    public void deleteTodayInternational() {
+        todayInternationalJpaRepo.deleteAll();
     }
 
     private void sendDiscordMessage(List<Notice> notices, Site site) {
@@ -68,18 +95,5 @@ public class ScrapingTask {
         }
 
         return Integer.parseInt(recent);
-    }
-
-    private String getRecentTitle(String currentTitle, String site) {
-        ValueOperations<String, String> values = redisTemplate.opsForValue();
-        String recent = values.get(site);
-
-        values.set(site, currentTitle);
-
-        if (recent == null) {
-            return currentTitle;
-        }
-
-        return recent;
     }
 }
